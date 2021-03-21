@@ -1,17 +1,18 @@
 import React, { } from 'react';
 import './style.css';
 let allowedWords = ['how', 'are', 'you']
-let copyParentNode = null
+
 const CustomTextField = () => {
 
-    const getMenu = () => {
+    const getMenu = (e) => {
         let currentSelection = null
         let currentRange = null
         let currentNode = null
-        let way = {}
+        let way = null
         let suggestions = ['word1', 'word2', 'word3']
         let items = document.querySelectorAll("#test > span")
         let idLast = -1000
+
         for (let i = 0; i < items.length; i++) {
             let item = items[i];
             item.addEventListener("click", function (event) {
@@ -21,14 +22,13 @@ const CustomTextField = () => {
                 currentSelection = window.getSelection()
                 currentRange = currentSelection.getRangeAt(0)
                 currentNode = currentRange.startContainer
-                idLast = event.target.id
+                idLast = e.target.id
 
-                //deleteAllClassToDivs(event.target.id)
+                deleteAllClassToDivs(event.target.id)
                 let newBox = document.createElement("span")
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
-                    console.log('EVN', event)
-                    newBox.classList.add(event.target.id);
+                    newBox.classList.add(e.target.id);
                     newBox.style.left = this.offsetLeft + 'px';
                     newBox.style.top = document.getElementById(idLast).offsetTop + 20 + 'px';
 
@@ -38,13 +38,13 @@ const CustomTextField = () => {
                     newDiv.addEventListener('click', function (event) {
                         way = { item: idLast, newValue: event.target.innerHTML }
                         deleteAllClassToDivs(event.target.id);
+                      
                         document.getElementById(way.item).classList.remove("err");
                         document.getElementById(way.item).innerHTML = way.newValue
                     });
                     newBox.appendChild(newDiv);
                 }
-                copyParentNode = this.parentNode
-                this.parentNode.appendChild(newBox);
+                item.appendChild(newBox);
             });
         }
     }
@@ -133,13 +133,17 @@ const CustomTextField = () => {
         setCaret(pos);
     }
 
-    const handleClick=(e)=> {
+    const handleClick = (e) => {
         if (e.nativeEvent.which === 1) {
-            getMenu()
-        } 
-      }
+            console.log('eeee', e)
+            getMenu(e)
+        }
+    }
 
-    return (<div id="test" onInput={emitChange} onClick={handleClick} contentEditable></div>)
+    return (<div id="test" onInput={emitChange}
+        onClick={handleClick} contentEditable
+        class="slot  conversation  word"
+    ></div>)
 }
 
 export default CustomTextField
