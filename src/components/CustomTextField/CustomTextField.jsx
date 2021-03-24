@@ -8,6 +8,7 @@ const CustomTextField = () => {
         let currentSelection = null
         let currentRange = null
         let currentNode = null
+        let parentNode = null
         let way = null
         let suggestions = ['word1', 'word2', 'word3']
         let items = document.querySelectorAll("#test > span")
@@ -49,22 +50,18 @@ const CustomTextField = () => {
         }
     }
 
-    const deleteAllClassToDivs = (idDivCurrent, second) => {
+    const deleteAllClassToDivs = (idDivCurrent) => {
         let rootElements = document.querySelectorAll(".nuevo");
         let selected = document.querySelectorAll(".selected");
 
-        if (!second) {
-            for (let i = 0; i < rootElements.length; i++) {
-                rootElements[i].remove()
-            }
-        }
         for (let i = 0; i < selected.length; i++) {
             selected[i].classList.remove('selected');
         }
         for (let i = 0; i < rootElements.length; i++) {
-            if (!rootElements[i].classList.contains(idDivCurrent)) {
+            
+                console.log('rootElements', rootElements)
                 rootElements[i].remove()
-            }
+
         }
     }
 
@@ -123,7 +120,6 @@ const CustomTextField = () => {
         for (let i = 0; i < nodeSpans.length; i++) {
             nodeSpans[i].id = "word" + i
         }
-        console.log('wordsWithSpan', nodeSpans)
     }
 
     const emitChange = (e) => {
@@ -135,7 +131,6 @@ const CustomTextField = () => {
 
     const handleClick = (e) => {
         if (e.nativeEvent.which === 1) {
-            console.log('eeee', e)
             getMenu(e)
         }
     }
