@@ -8,66 +8,58 @@ const CustomTextField = () => {
         let currentSelection = null
         let currentRange = null
         let currentNode = null
-        let parentNode = null
         let way = null
         let suggestions = ['word1', 'word2', 'word3']
         let items = document.querySelectorAll("#test > span")
         let idLast = -1000
 
         for (let i = 0; i < items.length; i++) {
-            let item = items[i];
+            let item = items[i]
             item.addEventListener("click", function (event) {
-                if (idLast === event.target.id) {
-                    return true;
-                }
+                deleteAllClassToDivs()
                 currentSelection = window.getSelection()
                 currentRange = currentSelection.getRangeAt(0)
                 currentNode = currentRange.startContainer
                 idLast = e.target.id
 
-                deleteAllClassToDivs(event.target.id)
                 let newBox = document.createElement("span")
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
-                    newBox.classList.add(e.target.id);
-                    newBox.style.left = this.offsetLeft + 'px';
+                    newBox.classList.add(e.target.id)
+                    newBox.style.left = this.offsetLeft + 'px'
                     newBox.style.top = document.getElementById(idLast).offsetTop + 20 + 'px';
-
-                    let newDiv = document.createElement("div");
-                    newDiv.classList.add('divBorder');
-                    newDiv.appendChild(document.createTextNode(suggestions[a]));
+                    let newDiv = document.createElement("div")
+                    newDiv.classList.add('divBorder')
+                    newDiv.appendChild(document.createTextNode(suggestions[a]))
                     newDiv.addEventListener('click', function (event) {
+                        newDiv = '<div/>'
                         way = { item: idLast, newValue: event.target.innerHTML }
-                        deleteAllClassToDivs(event.target.id);
-                      
-                        document.getElementById(way.item).classList.remove("err");
+                        deleteAllClassToDivs()
+                        document.getElementById(way.item).classList.remove("err")
                         document.getElementById(way.item).innerHTML = way.newValue
-                    });
-                    newBox.appendChild(newDiv);
+                    })
+                    newBox.appendChild(newDiv)
                 }
-                item.appendChild(newBox);
+                item.appendChild(newBox)
             });
         }
     }
 
-    const deleteAllClassToDivs = (idDivCurrent) => {
-        let rootElements = document.querySelectorAll(".nuevo");
-        let selected = document.querySelectorAll(".selected");
+    const deleteAllClassToDivs = () => {
+        let rootElements = document.querySelectorAll(".nuevo")
+        let selected = document.querySelectorAll(".selected")
 
         for (let i = 0; i < selected.length; i++) {
-            selected[i].classList.remove('selected');
+            selected[i].classList.remove('selected')
         }
         for (let i = 0; i < rootElements.length; i++) {
-            
-                console.log('rootElements', rootElements)
-                rootElements[i].remove()
-
+            rootElements[i].remove()
         }
     }
 
     const getCaret = () => {
+        deleteAllClassToDivs()
         const test = document.getElementById('test')
-
         if (window.getSelection) {
             let range = window.getSelection().getRangeAt(0);
             let preCaretRange = range.cloneRange();
@@ -137,7 +129,7 @@ const CustomTextField = () => {
 
     return (<div id="test" onInput={emitChange}
         onClick={handleClick} contentEditable
-        class="slot  conversation  word"
+        className="slot  conversation  word"
     ></div>)
 }
 
