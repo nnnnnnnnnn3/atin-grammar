@@ -1,42 +1,52 @@
-import React, { } from 'react';
+import React, { useState } from 'react';
 import './style.css';
 let allowedWords = ['how', 'are', 'you']
-
+let way = null
 const CustomTextField = () => {
 
     const getMenu = (e) => {
         let currentSelection = null
         let currentRange = null
         let currentNode = null
-        let way = null
+
         let suggestions = ['word1', 'word2', 'word3']
+
+        dinamic(e, currentSelection, currentRange, currentNode, suggestions)
+    }
+
+    const dinamic = (e, currentSelection, currentRange, currentNode, suggestions) => {
+        console.log(11111, e.target.id)
+        const id = e.target.id
         let items = document.querySelectorAll("#test > span")
         let idLast = -1000
 
         for (let i = 0; i < items.length; i++) {
             let item = items[i]
+
             item.addEventListener("click", function (event) {
+
                 deleteAllClassToDivs()
                 currentSelection = window.getSelection()
                 currentRange = currentSelection.getRangeAt(0)
                 currentNode = currentRange.startContainer
-                idLast = e.target.id
+                idLast = id
 
                 let newBox = document.createElement("span")
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
-                    newBox.classList.add(e.target.id)
+                    newBox.classList.add(id)
                     newBox.style.left = this.offsetLeft + 'px'
                     newBox.style.top = document.getElementById(idLast).offsetTop + 20 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
                     newDiv.appendChild(document.createTextNode(suggestions[a]))
+
                     newDiv.addEventListener('click', function (event) {
-                        newDiv = '<div/>'
-                        way = { item: idLast, newValue: event.target.innerHTML }
+                        way.newValue = event.target.innerHTML
                         deleteAllClassToDivs()
                         document.getElementById(way.item).classList.remove("err")
                         document.getElementById(way.item).innerHTML = way.newValue
+                        return true
                     })
                     newBox.appendChild(newDiv)
                 }
@@ -118,16 +128,32 @@ const CustomTextField = () => {
         const pos = getCaret();
         becameSpans(e);
         addIdentifiers()
-        setCaret(pos);
+        setCaret(pos)
     }
 
     const handleClick = (e) => {
+        let currentSelection = null
+        let currentRange = null
+        let currentNode = null
+        let suggestions = ['word1', 'word2', 'word3']
+        dinamic(e, currentSelection, currentRange, currentNode, suggestions)
         if (e.nativeEvent.which === 1) {
+            way = { item: e.target.id }
             getMenu(e)
         }
     }
 
-    return (<div id="test" onInput={emitChange}
+    const handleSpace = (e) => {
+        if (e.keyCode === 32) {
+            let currentSelection = null
+            let currentRange = null
+            let currentNode = null
+            let suggestions = ['word1', 'word2', 'word3']
+            dinamic(e, currentSelection, currentRange, currentNode, suggestions)
+        }
+    };
+
+    return (<div id="test" onInput={emitChange} onKeyDown={handleSpace}
         onClick={handleClick} contentEditable
         className="slot  conversation  word"
     ></div>)
