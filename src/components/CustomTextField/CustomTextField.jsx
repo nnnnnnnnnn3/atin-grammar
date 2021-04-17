@@ -1,42 +1,32 @@
-import React, { useState } from 'react';
-import './style.css';
-let allowedWords = ['how', 'are', 'you']
+import React from 'react'
+import './style.css'
+
 let way = null
-const CustomTextField = () => {
+const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, cells }) => {
 
     const getMenu = (e) => {
         let currentSelection = null
         let currentRange = null
-        let currentNode = null
-
-        let suggestions = ['word1', 'word2', 'word3']
-
-        dinamic(e, currentSelection, currentRange, currentNode, suggestions)
+        dinamic(e, currentSelection, currentRange)
     }
 
-    const dinamic = (e, currentSelection, currentRange, currentNode, suggestions) => {
-        console.log(11111, e.target.id)
-        const id = e.target.id
-        let items = document.querySelectorAll("#test > span")
-        let idLast = -1000
+    const dinamic = (e, currentSelection, currentRange) => {
+        const currentId = e.target.id
+        let elements = document.querySelectorAll("#test > span")
 
-        for (let i = 0; i < items.length; i++) {
-            let item = items[i]
-
-            item.addEventListener("click", function (event) {
-
+        for (let i = 0; i < elements.length; i++) {
+            let element = elements[i]
+            element.addEventListener("click", function (event) {
                 deleteAllClassToDivs()
                 currentSelection = window.getSelection()
                 currentRange = currentSelection.getRangeAt(0)
-                currentNode = currentRange.startContainer
-                idLast = id
 
                 let newBox = document.createElement("span")
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
-                    newBox.classList.add(id)
+                    newBox.classList.add(currentId)
                     newBox.style.left = this.offsetLeft + 'px'
-                    newBox.style.top = document.getElementById(idLast).offsetTop + 20 + 'px';
+                    newBox.style.top = document.getElementById(currentId).offsetTop + 20 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
                     newDiv.appendChild(document.createTextNode(suggestions[a]))
@@ -50,7 +40,7 @@ const CustomTextField = () => {
                     })
                     newBox.appendChild(newDiv)
                 }
-                item.appendChild(newBox)
+                element.appendChild(newBox)
             });
         }
     }
@@ -73,7 +63,6 @@ const CustomTextField = () => {
         if (window.getSelection) {
             let range = window.getSelection().getRangeAt(0);
             let preCaretRange = range.cloneRange();
-
             preCaretRange.selectNodeContents(test);
             preCaretRange.setEnd(range.endContainer, range.endOffset);
             return preCaretRange.toString().length;
@@ -132,28 +121,13 @@ const CustomTextField = () => {
     }
 
     const handleClick = (e) => {
-        let currentSelection = null
-        let currentRange = null
-        let currentNode = null
-        let suggestions = ['word1', 'word2', 'word3']
-        dinamic(e, currentSelection, currentRange, currentNode, suggestions)
         if (e.nativeEvent.which === 1) {
             way = { item: e.target.id }
             getMenu(e)
         }
     }
 
-    const handleSpace = (e) => {
-        if (e.keyCode === 32) {
-            let currentSelection = null
-            let currentRange = null
-            let currentNode = null
-            let suggestions = ['word1', 'word2', 'word3']
-            dinamic(e, currentSelection, currentRange, currentNode, suggestions)
-        }
-    };
-
-    return (<div id="test" onInput={emitChange} onKeyDown={handleSpace}
+    return (<div id="test" onInput={emitChange}
         onClick={handleClick} contentEditable
         className="slot  conversation  word"
     ></div>)
