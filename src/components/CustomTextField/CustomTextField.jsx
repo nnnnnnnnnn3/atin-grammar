@@ -26,7 +26,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                     newBox.className = 'nuevo'
                     newBox.classList.add(currentId)
                     newBox.style.left = this.offsetLeft + 'px'
-                    newBox.style.top = document.getElementById(currentId).offsetTop + 20 + 'px';
+                    newBox.style.top = document.getElementById(currentId).offsetTop + 5 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
                     newDiv.appendChild(document.createTextNode(suggestions[a]))
@@ -96,7 +96,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
 
         let wordsWithSpan = text.split(/\s/ugmi).map(function (c) {
             if (c.length > 0) {
-                if (event.which === 32) {
+                if (event.nativeEvent.data === " ") {
                     return allowedWords.indexOf(c) === -1 ? `<span class="word err">${c}</span>` : `<span class="word">${c}</span>`
                 }
                 return `<span class="word">${c}</span>`
