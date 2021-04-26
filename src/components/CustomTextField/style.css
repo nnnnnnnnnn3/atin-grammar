@@ -10,6 +10,10 @@
    background-color: #DCF8C6 !important
 }
 
+.hidden{
+  display: none;
+}
+
 .nuevo {
     width: 100px;
     height: auto;

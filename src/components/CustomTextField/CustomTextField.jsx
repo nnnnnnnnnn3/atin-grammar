@@ -25,7 +25,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
                     newBox.classList.add(currentId)
-                    newBox.style.left = this.offsetLeft + 'px'
+                    //newBox.style.left = this.offsetLeft + 'px' if is neccesary
                     newBox.style.top = document.getElementById(currentId).offsetTop + 5 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
@@ -33,6 +33,8 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
 
                     newDiv.addEventListener('click', function (event) {
                         way.newValue = event.target.innerHTML
+
+                        document.querySelectorAll(".nuevo")[0].classList.add('hidden')
                         deleteAllClassToDivs()
                         document.getElementById(way.item).classList.remove("err")
                         document.getElementById(way.item).innerHTML = way.newValue
@@ -53,6 +55,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
             selected[i].classList.remove('selected')
         }
         for (let i = 0; i < rootElements.length; i++) {
+            rootElements[i].classList.add('hidden')
             rootElements[i].remove()
         }
     }
