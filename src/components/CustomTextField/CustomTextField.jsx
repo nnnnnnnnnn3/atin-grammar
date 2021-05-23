@@ -4,12 +4,6 @@ import './style.css'
 let way = null
 const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, cells }) => {
 
-    const getMenu = (e) => {
-        let currentSelection = null
-        let currentRange = null
-        dinamic(e, currentSelection, currentRange)
-    }
-
     const dinamic = (e, currentSelection, currentRange) => {
         const currentId = e.target.id
         let elements = document.querySelectorAll("#test > span")
@@ -25,8 +19,8 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
                     newBox.classList.add(currentId)
-                    //newBox.style.left = this.offsetLeft + 'px' if is neccesary
-                    newBox.style.top = document.getElementById(currentId).offsetTop + 5 + 'px';
+                    newBox.style.left = this.offsetLeft + 'px' //if is neccesary
+                    newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
                     newDiv.appendChild(document.createTextNode(suggestions[a]))
@@ -126,7 +120,9 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
     const handleClick = (e) => {
         if (e.nativeEvent.which === 1) {
             way = { item: e.target.id }
-            getMenu(e)
+            let currentSelection = null
+            let currentRange = null
+            dinamic(e, currentSelection, currentRange)
         }
     }
 

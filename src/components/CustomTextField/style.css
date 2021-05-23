@@ -79,36 +79,11 @@
     color: black;
     border: 1px solid black;
 }
-/*
+
 .err {
   display: inline-block;
-  position: relative;
   z-index: 2;
   text-decoration-line: line-through;
   text-decoration-style: wavy;
   text-decoration-color: red;
-}*/
-
-.err {
-  display: inline-block;
-  position: relative;
-}
-
-.err:after,
-.err:before{
-  content: '';
-  width: 100%;
-  z-index: 2;
-  border-bottom: 2px dotted red;
-  position: absolute;
-  font-size: 16px;
-  display: block;
-  height: 4px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.err:before{
-  left: 2px;
-  top: calc(50% - 1px);
 }
