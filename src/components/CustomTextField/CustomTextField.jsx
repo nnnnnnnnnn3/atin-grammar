@@ -18,21 +18,17 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                 let newBox = document.createElement("span")
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
-                    newBox.classList.add(currentId)
                     newBox.style.left = this.offsetLeft + 'px' //if is neccesary
                     newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
                     newDiv.appendChild(document.createTextNode(suggestions[a]))
-
                     newDiv.addEventListener('click', function (event) {
                         way.newValue = event.target.innerHTML
-
                         document.querySelectorAll(".nuevo")[0].classList.add('hidden')
                         deleteAllClassToDivs()
                         document.getElementById(way.item).classList.remove("err")
                         document.getElementById(way.item).innerHTML = way.newValue
-                        return true
                     })
                     newBox.appendChild(newDiv)
                 }
