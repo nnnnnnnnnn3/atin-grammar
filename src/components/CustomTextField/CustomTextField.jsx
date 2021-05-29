@@ -26,7 +26,6 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                     newDiv.addEventListener('click', function (event) {
                         way.newValue = event.target.innerHTML
                         document.querySelectorAll(".nuevo")[0].classList.add('hidden')
-                        deleteAllClassToDivs()
                         document.getElementById(way.item).classList.remove("err")
                         document.getElementById(way.item).innerHTML = way.newValue
                     })
@@ -111,9 +110,17 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
         becameSpans(e);
         addIdentifiers()
         setCaret(pos)
+        if (e.nativeEvent.data === " ") {
+            let currentSelection = null
+            let currentRange = null
+            dinamic(e, currentSelection, currentRange)
+        }
     }
 
     const handleClick = (e) => {
+        if (e.target && e.target.firstElementChild && e.target.firstElementChild.id === 'word0') {
+            deleteAllClassToDivs()
+        }
         if (e.nativeEvent.which === 1) {
             way = { item: e.target.id }
             let currentSelection = null
