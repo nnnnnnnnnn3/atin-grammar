@@ -75,6 +75,9 @@
     left: 0px;
 }
 
+span {
+    color: red;
+  }
 .word {
     color: black;
     border: 1px solid black;

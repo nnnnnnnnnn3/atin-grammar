@@ -6,6 +6,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
 
     const dinamic = (e, currentSelection, currentRange) => {
         const currentId = e.target.id
+        console.log('ID', currentId)
         let elements = document.querySelectorAll("#test > span")
 
         for (let i = 0; i < elements.length; i++) {
@@ -107,7 +108,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
 
     const emitChange = (e) => {
         const pos = getCaret();
-        becameSpans(e);
+        // becameSpans(e);
         addIdentifiers()
         setCaret(pos)
         if (e.nativeEvent.data === " ") {
@@ -117,15 +118,68 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
         }
     }
 
+
+    function play() {
+        const test = document.getElementById('test');
+        const text = test.innerText || test.textContent;
+        
+        if(!text) return false;
+        
+        const select = window.getSelection().getRangeAt(0);
+        const index = select.startOffset;
+        
+        const focusNode = select.startContainer;
+        if(focusNode.parentNode.nodeName == "SPAN") return false;
+        const nodes = focusNode.parentNode.childNodes;
+        
+        let result = '';
+        
+        nodes.forEach(node => {
+          const nodeText = node.innerText || node.textContent;
+          
+          if(node == focusNode) {
+            const words = nodeText
+                          .split(' ')
+                          .reduce((accu, cur, idx, arr) => {
+                            const len = cur.length;
+                            accu['pre'] += idx ? arr[idx-1].length : 0;
+                            const preLen = accu['pre'];
+      
+                            accu['arr'].push([
+                              preLen + idx,
+                              len + preLen + idx
+                            ]);
+                            return accu;
+                          }, {'pre': 0, 'arr': []});
+      
+            const word = words['arr'].find(e => index >= e[0] && index <= e[1]);
+      
+            result += `${nodeText.slice(0, word[0])}<span class="word">${nodeText.slice(word[0], word[1])}</span>${nodeText.slice(word[1])}`;
+          }
+          else {
+            result += nodeText;
+          }
+        });
+        
+        test.innerHTML = result;
+      }
+
     const handleClick = (e) => {
-        if (e.target && e.target.firstElementChild && e.target.firstElementChild.id === 'word0') {
+       
+        if (e.target &&
+            e.target.firstElementChild &&
+            e.target.firstElementChild.id === 'word0') {
             deleteAllClassToDivs()
         }
         if (e.nativeEvent.which === 1) {
+            play()
+            addIdentifiers()
             way = { item: e.target.id }
-            let currentSelection = null
-            let currentRange = null
-            dinamic(e, currentSelection, currentRange)
+            console.log('eeee',e.target.id)
+
+                dinamic(e, null, null)
+            
+            
         }
     }
 
