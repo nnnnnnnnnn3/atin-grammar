@@ -4,22 +4,25 @@ import './style.css'
 let way = null
 const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, cells }) => {
 
-    const dinamic = (e, currentSelection, currentRange) => {
+    const dinamic2 = (e, currentSelection, currentRange) => {
         const currentId = e.target.id
         console.log('ID', currentId)
         let elements = document.querySelectorAll("#test > span")
-
+        console.log('HHHHH', elements)
         for (let i = 0; i < elements.length; i++) {
             let element = elements[i]
+            console.log('LLLL')
             element.addEventListener("click", function (event) {
                 deleteAllClassToDivs()
                 currentSelection = window.getSelection()
                 currentRange = currentSelection.getRangeAt(0)
-
+                console.log(111122223333)
                 let newBox = document.createElement("span")
                 for (let a = 0; a < suggestions.length; a++) {
                     newBox.className = 'nuevo'
                     newBox.style.left = this.offsetLeft + 'px' //if is neccesary
+                    //newBox.style.left = element.offsetLeft + 'px' //if is neccesary
+
                     newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
                     let newDiv = document.createElement("div")
                     newDiv.classList.add('divBorder')
@@ -33,7 +36,43 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                     newBox.appendChild(newDiv)
                 }
                 element.appendChild(newBox)
-            });
+            })
+        }
+    }
+
+    const dinamic = (e, currentSelection, currentRange) => {
+        const currentId = e.target.id
+        console.log('ID', currentId)
+        let elements = document.querySelectorAll("#test > span")
+        console.log('HHHHH', elements)
+        for (let i = 0; i < elements.length; i++) {
+            let element = elements[i]
+            console.log('LLLL')
+            //element.addEventListener("click", function (event) {
+                deleteAllClassToDivs()
+                currentSelection = window.getSelection()
+                currentRange = currentSelection.getRangeAt(0)
+                console.log(111122223333)
+                let newBox = document.createElement("span")
+                for (let a = 0; a < suggestions.length; a++) {
+                    newBox.className = 'nuevo'
+                   // newBox.style.left = this.offsetLeft + 'px' //if is neccesary
+                    newBox.style.left = element.offsetLeft + 'px' //if is neccesary
+
+                    newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
+                    let newDiv = document.createElement("div")
+                    newDiv.classList.add('divBorder')
+                    newDiv.appendChild(document.createTextNode(suggestions[a]))
+                    newDiv.addEventListener('click', function (event) {
+                        way.newValue = event.target.innerHTML
+                        document.querySelectorAll(".nuevo")[0].classList.add('hidden')
+                        document.getElementById(way.item).classList.remove("err")
+                        document.getElementById(way.item).innerHTML = way.newValue
+                    })
+                    newBox.appendChild(newDiv)
+                }
+                element.appendChild(newBox)
+            
         }
     }
 
@@ -108,13 +147,13 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
 
     const emitChange = (e) => {
         const pos = getCaret();
-        // becameSpans(e);
+         becameSpans(e);
         addIdentifiers()
         setCaret(pos)
         if (e.nativeEvent.data === " ") {
             let currentSelection = null
             let currentRange = null
-            dinamic(e, currentSelection, currentRange)
+            dinamic2(e, currentSelection, currentRange)
         }
     }
 
@@ -164,7 +203,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
         test.innerHTML = result;
       }
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
        
         if (e.target &&
             e.target.firstElementChild &&
@@ -172,12 +211,13 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
             deleteAllClassToDivs()
         }
         if (e.nativeEvent.which === 1) {
-            play()
+            await play()
             addIdentifiers()
             way = { item: e.target.id }
-            console.log('eeee',e.target.id)
+            let elements = document.querySelectorAll("#test > span")
+            console.log('eeee',elements)
 
-                dinamic(e, null, null)
+               // dinamic(e, null, null)
             
             
         }
