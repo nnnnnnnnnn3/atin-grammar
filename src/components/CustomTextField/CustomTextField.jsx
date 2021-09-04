@@ -49,30 +49,30 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
             let element = elements[i]
             console.log('LLLL')
             //element.addEventListener("click", function (event) {
-                deleteAllClassToDivs()
-                currentSelection = window.getSelection()
-                currentRange = currentSelection.getRangeAt(0)
-                console.log(111122223333)
-                let newBox = document.createElement("span")
-                for (let a = 0; a < suggestions.length; a++) {
-                    newBox.className = 'nuevo'
-                   // newBox.style.left = this.offsetLeft + 'px' //if is neccesary
-                    newBox.style.left = element.offsetLeft + 'px' //if is neccesary
+            deleteAllClassToDivs()
+            currentSelection = window.getSelection()
+            currentRange = currentSelection.getRangeAt(0)
+            console.log(111122223333)
+            let newBox = document.createElement("span")
+            for (let a = 0; a < suggestions.length; a++) {
+                newBox.className = 'nuevo'
+                // newBox.style.left = this.offsetLeft + 'px' //if is neccesary
+                newBox.style.left = element.offsetLeft + 'px' //if is neccesary
 
-                    newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
-                    let newDiv = document.createElement("div")
-                    newDiv.classList.add('divBorder')
-                    newDiv.appendChild(document.createTextNode(suggestions[a]))
-                    newDiv.addEventListener('click', function (event) {
-                        way.newValue = event.target.innerHTML
-                        document.querySelectorAll(".nuevo")[0].classList.add('hidden')
-                        document.getElementById(way.item).classList.remove("err")
-                        document.getElementById(way.item).innerHTML = way.newValue
-                    })
-                    newBox.appendChild(newDiv)
-                }
-                element.appendChild(newBox)
-            
+                newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
+                let newDiv = document.createElement("div")
+                newDiv.classList.add('divBorder')
+                newDiv.appendChild(document.createTextNode(suggestions[a]))
+                newDiv.addEventListener('click', function (event) {
+                    way.newValue = event.target.innerHTML
+                    document.querySelectorAll(".nuevo")[0].classList.add('hidden')
+                    document.getElementById(way.item).classList.remove("err")
+                    document.getElementById('word0').innerHTML = way.newValue
+                })
+                newBox.appendChild(newDiv)
+            }
+            element.appendChild(newBox)
+
         }
     }
 
@@ -147,13 +147,13 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
 
     const emitChange = (e) => {
         const pos = getCaret();
-         becameSpans(e);
+        // becameSpans(e);
         addIdentifiers()
         setCaret(pos)
         if (e.nativeEvent.data === " ") {
             let currentSelection = null
             let currentRange = null
-            dinamic2(e, currentSelection, currentRange)
+           // dinamic2(e, currentSelection, currentRange)
         }
     }
 
@@ -161,50 +161,50 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
     function play() {
         const test = document.getElementById('test');
         const text = test.innerText || test.textContent;
-        
-        if(!text) return false;
-        
+
+        if (!text) return false;
+
         const select = window.getSelection().getRangeAt(0);
         const index = select.startOffset;
-        
+
         const focusNode = select.startContainer;
-        if(focusNode.parentNode.nodeName == "SPAN") return false;
+        if (focusNode.parentNode.nodeName == "SPAN") return false;
         const nodes = focusNode.parentNode.childNodes;
-        
+
         let result = '';
-        
+
         nodes.forEach(node => {
-          const nodeText = node.innerText || node.textContent;
-          
-          if(node == focusNode) {
-            const words = nodeText
-                          .split(' ')
-                          .reduce((accu, cur, idx, arr) => {
-                            const len = cur.length;
-                            accu['pre'] += idx ? arr[idx-1].length : 0;
-                            const preLen = accu['pre'];
-      
-                            accu['arr'].push([
-                              preLen + idx,
-                              len + preLen + idx
-                            ]);
-                            return accu;
-                          }, {'pre': 0, 'arr': []});
-      
-            const word = words['arr'].find(e => index >= e[0] && index <= e[1]);
-      
-            result += `${nodeText.slice(0, word[0])}<span class="word">${nodeText.slice(word[0], word[1])}</span>${nodeText.slice(word[1])}`;
-          }
-          else {
-            result += nodeText;
-          }
+            const nodeText = node.innerText || node.textContent;
+
+            if (node == focusNode) {
+                const words = nodeText
+                    .split(' ')
+                    .reduce((accu, cur, idx, arr) => {
+                        const len = cur.length;
+                        accu['pre'] += idx ? arr[idx - 1].length : 0;
+                        const preLen = accu['pre'];
+
+                        accu['arr'].push([
+                            preLen + idx,
+                            len + preLen + idx
+                        ]);
+                        return accu;
+                    }, { 'pre': 0, 'arr': [] });
+
+                const word = words['arr'].find(e => index >= e[0] && index <= e[1]);
+
+                result += `${nodeText.slice(0, word[0])}<span class="word">${nodeText.slice(word[0], word[1])}</span>${nodeText.slice(word[1])}`;
+            }
+            else {
+                result += nodeText;
+            }
         });
-        
+
         test.innerHTML = result;
-      }
+    }
 
     const handleClick = async (e) => {
-       
+
         if (e.target &&
             e.target.firstElementChild &&
             e.target.firstElementChild.id === 'word0') {
@@ -215,11 +215,11 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
             addIdentifiers()
             way = { item: e.target.id }
             let elements = document.querySelectorAll("#test > span")
-            console.log('eeee',elements)
+            console.log('eeee', elements)
 
-               // dinamic(e, null, null)
-            
-            
+            dinamic(e, null, null)
+
+
         }
     }
 
