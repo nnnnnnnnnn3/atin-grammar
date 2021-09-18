@@ -52,12 +52,12 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
             deleteAllClassToDivs()
             currentSelection = window.getSelection()
             currentRange = currentSelection.getRangeAt(0)
-            console.log(111122223333)
+            console.log(111122223333, currentId)
             let newBox = document.createElement("span")
             for (let a = 0; a < suggestions.length; a++) {
                 newBox.className = 'nuevo'
                 // newBox.style.left = this.offsetLeft + 'px' //if is neccesary
-                newBox.style.left = element.offsetLeft + 'px' //if is neccesary
+                newBox.style.left = document.getElementById(currentId).offsetLeft + 'px' //if is neccesary
 
                 newBox.style.top = document.getElementById(currentId).offsetTop + 15 + 'px';
                 let newDiv = document.createElement("div")
@@ -74,7 +74,7 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                 newBox.appendChild(newDiv)
             }
             element.appendChild(newBox)
-
+        //})
         }
     }
 
@@ -148,31 +148,59 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
     }
 
     const emitChange = (e) => {
+        
+        if (e.nativeEvent.data === " ") {
+            console.log("ESPACIO")
+            let currentSelection = null
+            let currentRange = null
+           // dinamic2(e, currentSelection, currentRange)
+
+           var elt = e.target;
+           e.preventDefault();
+            //elt.focus();
+            let sel = document.getSelection();
+            sel.modify("extend", "backward", "word");
+            let range = sel.getRangeAt(0);
+            console.log(range.toString().trim());
+            let copy=range.toString().trim()
+            range.deleteContents();
+            var el = document.createElement("div");
+            //el.innerHTML = " " +copy+" "
+            el.innerHTML=" " +copy+" "
+            if(copy==="estas"){
+            el.innerHTML = ` <span class="word err">${" "+copy+" "}</span>`
+            }
+            var frag = document.createDocumentFragment(), node;
+            while (node = el.firstChild) {
+                frag.appendChild(node);
+            }
+            console.log('FRAG', frag)
+            range.insertNode(frag);
+            range.collapse();
+        }
+
         const pos = getCaret();
         // becameSpans(e);
         addIdentifiers()
         setCaret(pos)
-        if (e.nativeEvent.data === " ") {
-            let currentSelection = null
-            let currentRange = null
-           // dinamic2(e, currentSelection, currentRange)
-        }
     }
 
 
     function play() {
+        
         const test = document.getElementById('test');
         const text = test.innerText || test.textContent;
-
+        
         if (!text) return false;
 
         const select = window.getSelection().getRangeAt(0);
         const index = select.startOffset;
 
         const focusNode = select.startContainer;
+        console.log('TEXT', select, index,focusNode)
         if (focusNode.parentNode.nodeName == "SPAN") return false;
         const nodes = focusNode.parentNode.childNodes;
-
+        console.log("PLAY", nodes)
         let result = '';
 
         nodes.forEach(node => {
@@ -192,16 +220,16 @@ const CustomTextField = ({ suggestions, allowedWords, styleBorder, styleCell, ce
                         ]);
                         return accu;
                     }, { 'pre': 0, 'arr': [] });
-
+                    
                 const word = words['arr'].find(e => index >= e[0] && index <= e[1]);
-
+                
                 result += `${nodeText.slice(0, word[0])}<span class="word">${nodeText.slice(word[0], word[1])}</span>${nodeText.slice(word[1])}`;
             }
             else {
                 result += nodeText;
             }
         });
-
+        
         test.innerHTML = result;
     }
 
